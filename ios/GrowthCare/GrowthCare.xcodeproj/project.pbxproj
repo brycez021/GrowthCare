@@ -1,0 +1,368 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07B6D3152B23D9D6E45CB6E1 /* VaccineDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78644B311A3E67B19F0C424 /* VaccineDetailView.swift */; };
+		1967D5B33C7F42CE80C73F98 /* ClinicViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B623BF7CF20B4089A98230D1 /* ClinicViews.swift */; };
+		3A27637E39FBCEA379F04B7B /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F38BA8DDE31D94E2058A6D8 /* DesignSystem.swift */; };
+		5DF87C4F0E317EC11B69524B /* VaccineInfoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8D28DF293DCBA6E8F14AB /* VaccineInfoStore.swift */; };
+		8254CE0C50D60E270621DE0E /* GrowthCareStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1D650B3A0469E56460F733 /* GrowthCareStore.swift */; };
+		8B257012479D4BDB8724E8F5 /* GrowthCarePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F80B82EC4B645169A826281 /* GrowthCarePersistence.swift */; };
+		8E2A0608B3B84CA4B6C29331 /* GrowthCurveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2C1737B714868A1D9D0D2 /* GrowthCurveView.swift */; };
+		901945F82FF8AE0F3D7355F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E8CBC5CAF709340645871AA /* Assets.xcassets */; };
+		94D2C0F85C53E41AEE0B9345 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F78EF91E59DE9F890ED120 /* HomeView.swift */; };
+		9E25512C1DAA4F1F8B81D62E /* IntegrationPlaceholderViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC7F428560A48D3B02B9335 /* IntegrationPlaceholderViews.swift */; };
+		A36329157E447538B15682E0 /* AddVaccineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3AAB45859C95083089F22B3 /* AddVaccineView.swift */; };
+		B27C2B8D0E5F4A1C9D3E6F12 /* GrowthRecordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18F1A7C9D4E40D3B21A9C11 /* GrowthRecordsView.swift */; };
+		B434DD4311E018D0462FCA20 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA2D2304F8DD08917803EA8 /* Models.swift */; };
+		C31D4E5F60718293A4B5C6D7 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42E5F60718293A4B5C6D7E8 /* ProfileView.swift */; };
+		C4FD02AE0BE14F04B863ED9E /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6FCFA72094A1DB5F848EA /* ScheduleView.swift */; };
+		E2B538B3981A65E23E814552 /* HomeOverlays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE0EE334BFAC4F288076735 /* HomeOverlays.swift */; };
+		EAE618E7BE900A235D42680F /* GrowthCareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C7EA0377E46FB4F1A9169B /* GrowthCareApp.swift */; };
+		F9768FEA0E0A4C59B01FB8F2 /* VaccineCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6400E2AC0E394F57947B71C4 /* VaccineCalendarView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0F80B82EC4B645169A826281 /* GrowthCarePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowthCarePersistence.swift; sourceTree = "<group>"; };
+		11F78EF91E59DE9F890ED120 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		19C7EA0377E46FB4F1A9169B /* GrowthCareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowthCareApp.swift; sourceTree = "<group>"; };
+		1E8CBC5CAF709340645871AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2BE0EE334BFAC4F288076735 /* HomeOverlays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeOverlays.swift; sourceTree = "<group>"; };
+		3FB8D28DF293DCBA6E8F14AB /* VaccineInfoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaccineInfoStore.swift; sourceTree = "<group>"; };
+		450F825535B9D6215DFBC378 /* GrowthCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GrowthCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DC7F428560A48D3B02B9335 /* IntegrationPlaceholderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationPlaceholderViews.swift; sourceTree = "<group>"; };
+		4FE2C1737B714868A1D9D0D2 /* GrowthCurveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowthCurveView.swift; sourceTree = "<group>"; };
+		6400E2AC0E394F57947B71C4 /* VaccineCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaccineCalendarView.swift; sourceTree = "<group>"; };
+		6F38BA8DDE31D94E2058A6D8 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		7DB6FCFA72094A1DB5F848EA /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
+		9CA2D2304F8DD08917803EA8 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		A18F1A7C9D4E40D3B21A9C11 /* GrowthRecordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowthRecordsView.swift; sourceTree = "<group>"; };
+		B623BF7CF20B4089A98230D1 /* ClinicViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClinicViews.swift; sourceTree = "<group>"; };
+		D42E5F60718293A4B5C6D7E8 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		D78644B311A3E67B19F0C424 /* VaccineDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaccineDetailView.swift; sourceTree = "<group>"; };
+		F3AAB45859C95083089F22B3 /* AddVaccineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVaccineView.swift; sourceTree = "<group>"; };
+		FE1D650B3A0469E56460F733 /* GrowthCareStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowthCareStore.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		34BDE2A157B26A535BF444FA = {
+			isa = PBXGroup;
+			children = (
+				C72311BCD109A81E5C04816A /* GrowthCare */,
+				A1365E31360940BF05C3623D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A1365E31360940BF05C3623D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				450F825535B9D6215DFBC378 /* GrowthCare.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C72311BCD109A81E5C04816A /* GrowthCare */ = {
+			isa = PBXGroup;
+			children = (
+				F3AAB45859C95083089F22B3 /* AddVaccineView.swift */,
+				1E8CBC5CAF709340645871AA /* Assets.xcassets */,
+				B623BF7CF20B4089A98230D1 /* ClinicViews.swift */,
+				6F38BA8DDE31D94E2058A6D8 /* DesignSystem.swift */,
+				19C7EA0377E46FB4F1A9169B /* GrowthCareApp.swift */,
+				0F80B82EC4B645169A826281 /* GrowthCarePersistence.swift */,
+				4FE2C1737B714868A1D9D0D2 /* GrowthCurveView.swift */,
+				A18F1A7C9D4E40D3B21A9C11 /* GrowthRecordsView.swift */,
+				FE1D650B3A0469E56460F733 /* GrowthCareStore.swift */,
+				2BE0EE334BFAC4F288076735 /* HomeOverlays.swift */,
+				11F78EF91E59DE9F890ED120 /* HomeView.swift */,
+				4DC7F428560A48D3B02B9335 /* IntegrationPlaceholderViews.swift */,
+				9CA2D2304F8DD08917803EA8 /* Models.swift */,
+				D42E5F60718293A4B5C6D7E8 /* ProfileView.swift */,
+				7DB6FCFA72094A1DB5F848EA /* ScheduleView.swift */,
+				6400E2AC0E394F57947B71C4 /* VaccineCalendarView.swift */,
+				D78644B311A3E67B19F0C424 /* VaccineDetailView.swift */,
+				3FB8D28DF293DCBA6E8F14AB /* VaccineInfoStore.swift */,
+			);
+			path = GrowthCare;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6988AF08A78F87B67F7BCAA1 /* GrowthCare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7801E407D92244298F983146 /* Build configuration list for PBXNativeTarget "GrowthCare" */;
+			buildPhases = (
+				9BEC0B8C77F0E577DB0733EF /* Sources */,
+				B803968967EDFDE66E9E6561 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GrowthCare;
+			packageProductDependencies = (
+			);
+			productName = GrowthCare;
+			productReference = 450F825535B9D6215DFBC378 /* GrowthCare.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8F89ABBED16212DEE086E1F0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = 9310B4E5A7912AB075EE66A1 /* Build configuration list for PBXProject "GrowthCare" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 34BDE2A157B26A535BF444FA;
+			minimizedProjectReferenceProxies = 1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6988AF08A78F87B67F7BCAA1 /* GrowthCare */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B803968967EDFDE66E9E6561 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				901945F82FF8AE0F3D7355F0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9BEC0B8C77F0E577DB0733EF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A36329157E447538B15682E0 /* AddVaccineView.swift in Sources */,
+				1967D5B33C7F42CE80C73F98 /* ClinicViews.swift in Sources */,
+				3A27637E39FBCEA379F04B7B /* DesignSystem.swift in Sources */,
+				EAE618E7BE900A235D42680F /* GrowthCareApp.swift in Sources */,
+				8B257012479D4BDB8724E8F5 /* GrowthCarePersistence.swift in Sources */,
+				8E2A0608B3B84CA4B6C29331 /* GrowthCurveView.swift in Sources */,
+				B27C2B8D0E5F4A1C9D3E6F12 /* GrowthRecordsView.swift in Sources */,
+				8254CE0C50D60E270621DE0E /* GrowthCareStore.swift in Sources */,
+				E2B538B3981A65E23E814552 /* HomeOverlays.swift in Sources */,
+				94D2C0F85C53E41AEE0B9345 /* HomeView.swift in Sources */,
+				9E25512C1DAA4F1F8B81D62E /* IntegrationPlaceholderViews.swift in Sources */,
+				B434DD4311E018D0462FCA20 /* Models.swift in Sources */,
+				C31D4E5F60718293A4B5C6D7 /* ProfileView.swift in Sources */,
+				C4FD02AE0BE14F04B863ED9E /* ScheduleView.swift in Sources */,
+				F9768FEA0E0A4C59B01FB8F2 /* VaccineCalendarView.swift in Sources */,
+				07B6D3152B23D9D6E45CB6E1 /* VaccineDetailView.swift in Sources */,
+				5DF87C4F0E317EC11B69524B /* VaccineInfoStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		332CD02059DE1D9EC8BB047D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		3DC8A3DC13FA7878F5421FCC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = JA956N353J;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.growthcare.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B8A41AA7E869B4A2F655ED6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		C39395FCB92F8C3D66D7CF42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = JA956N353J;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.growthcare.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7801E407D92244298F983146 /* Build configuration list for PBXNativeTarget "GrowthCare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3DC8A3DC13FA7878F5421FCC /* Debug */,
+				C39395FCB92F8C3D66D7CF42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9310B4E5A7912AB075EE66A1 /* Build configuration list for PBXProject "GrowthCare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				332CD02059DE1D9EC8BB047D /* Debug */,
+				B8A41AA7E869B4A2F655ED6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8F89ABBED16212DEE086E1F0 /* Project object */;
+}
