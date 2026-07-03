@@ -590,12 +590,13 @@ final class GrowthCareStore: ObservableObject {
         persistSnapshot()
     }
 
-    func updateParentProfile(name: String, phone: String, idNumber: String, address: String) {
+    func updateParentProfile(name: String, phone: String, idNumber: String, address: String, avatarData: Data? = nil) {
         parentProfile.name = name
         parentProfile.phone = phone
         parentProfile.idNumber = idNumber
         parentProfile.address = address
-        toastMessage = "已保存个人信息"
+        parentProfile.avatarData = avatarData
+        toastMessage = "已保存家长信息"
         persistSnapshot()
         popNavigation()
     }

@@ -16,8 +16,6 @@ struct ProfileView: View {
                         VStack(spacing: 0) {
                             childrenSection
                                 .padding(.top, max(0, GCLayout.profileFirstSectionTopY - GCLayout.profileTopBandHeight))
-                            clinicSection
-                                .padding(.top, 10)
                             reminderSection
                                 .padding(.top, 10)
                         }
@@ -78,8 +76,7 @@ struct ProfileView: View {
 
     private var profileCard: some View {
         HStack(spacing: 16) {
-            Image(store.parentProfile.avatarAsset)
-                .resizable()
+            AvatarImage(asset: store.parentProfile.avatarAsset, data: store.parentProfile.avatarData)
                 .scaledToFill()
                 .frame(width: 80, height: 80)
                 .clipShape(Circle())
@@ -104,7 +101,7 @@ struct ProfileView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 12, height: 12)
-                        Text("修改个人信息")
+                        Text("修改家长信息")
                             .font(.system(size: 12))
                     }
                     .foregroundColor(Color(hex: 0x4A6250))
@@ -165,44 +162,6 @@ struct ProfileView: View {
 
             addRow(position: .last) {
                 store.openChildProfile()
-            }
-        }
-    }
-
-    private var clinicSection: some View {
-        ProfileSection(icon: "zhensuo", title: "诊所") {
-            if let clinic = store.clinics.first {
-                ProfileRow(position: .first) {
-                    Button {
-                        store.openClinicList()
-                    } label: {
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack(alignment: .top) {
-                                Text(clinic.name)
-                                    .font(.system(size: 16))
-                                    .foregroundColor(.black)
-                                    .lineLimit(2)
-                                Spacer()
-                                Text("默认")
-                                    .font(.system(size: 10))
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 10)
-                                    .frame(height: 18)
-                                    .background(Color(hex: 0x4D8266))
-                                    .clipShape(Capsule())
-                            }
-                            Text(clinic.address)
-                                .font(.system(size: 14))
-                                .foregroundColor(.black)
-                        }
-                        .padding(.vertical, 12)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-
-            addRow(position: .last) {
-                store.openAddClinic()
             }
         }
     }
@@ -343,6 +302,8 @@ struct ParentProfileView: View {
     @State private var phone = ""
     @State private var idNumber = ""
     @State private var address = ""
+    @State private var avatarData: Data?
+    @State private var selectedPhoto: PhotosPickerItem?
 
     var body: some View {
         GeometryReader { proxy in
@@ -369,7 +330,13 @@ struct ParentProfileView: View {
                         .padding(.top, 24)
 
                         Button {
-                            store.updateParentProfile(name: name, phone: phone, idNumber: idNumber, address: address)
+                            store.updateParentProfile(
+                                name: name,
+                                phone: phone,
+                                idNumber: idNumber,
+                                address: address,
+                                avatarData: avatarData
+                            )
                         } label: {
                             Text("完成")
                                 .font(.system(size: 16, weight: .semibold))
@@ -382,6 +349,14 @@ struct ParentProfileView: View {
                         .buttonStyle(.plain)
                         .padding(.horizontal, 39)
                         .padding(.top, 32)
+
+                        Text("App不收集任何用户个人数据，所有数据仅存储在本地设备")
+                            .font(.system(size: 12))
+                            .foregroundColor(GCColor.textMuted)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(4)
+                            .padding(.horizontal, 39)
+                            .padding(.top, 18)
                     }
                     .frame(maxWidth: GCLayout.maxDesignWidth)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -398,6 +373,10 @@ struct ParentProfileView: View {
             phone = store.parentProfile.phone
             idNumber = store.parentProfile.idNumber
             address = store.parentProfile.address
+            avatarData = store.parentProfile.avatarData
+        }
+        .onChange(of: selectedPhoto) { newItem in
+            loadSelectedParentAvatar(from: newItem)
         }
     }
 
@@ -432,7 +411,7 @@ struct ParentProfileView: View {
                 }
                 .position(x: contentLeading + 48, y: 93)
 
-                Text("个人信息")
+                Text("家长信息")
                     .font(.system(size: 20, weight: .regular))
                     .foregroundColor(.black)
                     .frame(height: 28)
@@ -453,20 +432,22 @@ struct ParentProfileView: View {
     }
 
     private var parentAvatar: some View {
-        ZStack(alignment: .bottomTrailing) {
-            Image(store.parentProfile.avatarAsset)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 80, height: 80)
-                .clipShape(Circle())
-
-            Image("profile-avatar-edit")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 24, height: 24)
+        let avatarAsset = store.parentProfile.avatarAsset
+        return PhotosPicker(selection: $selectedPhoto, matching: .images, photoLibrary: .shared()) {
+            avatar(asset: avatarAsset, data: avatarData)
         }
-        .frame(width: 80, height: 80)
-        .frame(maxWidth: .infinity)
+        .buttonStyle(.plain)
+    }
+
+    private func loadSelectedParentAvatar(from item: PhotosPickerItem?) {
+        guard let item else { return }
+        Task {
+            if let data = try? await item.loadTransferable(type: Data.self) {
+                await MainActor.run {
+                    avatarData = data
+                }
+            }
+        }
     }
 }
 

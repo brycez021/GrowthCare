@@ -107,7 +107,7 @@ enum GrowthCareNotificationScheduler {
 
                     let content = UNMutableNotificationContent()
                     content.title = "疫苗接种提醒"
-                    content.body = "\(child.name) \(appointment.vaccineName) 第\(appointment.doseNumber)剂，预约时间 \(dateText(appointment.date))，接种门诊 \(appointment.clinic)。"
+                    content.body = "\(child.name) \(appointment.vaccineName) 第\(appointment.doseNumber)剂，预约时间 \(dateText(appointment.date))。"
                     content.sound = .default
                     content.userInfo = [
                         "childID": child.id,

@@ -5,42 +5,40 @@ struct HomeOverlayView: View {
     let overlay: HomeOverlay
 
     var body: some View {
-        ZStack {
-            Color.black.opacity(0.3)
-                .ignoresSafeArea()
-                .onTapGesture {
-                    if case .pastDoseReview = overlay {
-                        return
-                    }
-                    if case .appointmentReview = overlay {
-                        return
-                    }
-                    store.activeOverlay = nil
-                }
+        GeometryReader { proxy in
+            let overlayWidth = min(max(280, proxy.size.width - 40), GCLayout.maxDesignWidth - 40)
 
-            VStack(spacing: 16) {
-                switch overlay {
-                case .bookingDate(let booking):
-                    BookingDateOverlay(booking: booking)
-                case .clinic(let booking):
-                    ClinicOverlay(booking: booking)
-                case .clinicSelect(let booking):
-                    ClinicSelectOverlay(booking: booking)
-                case .clinicAddressInput(let booking):
-                    ClinicAddressInputOverlay(booking: booking)
-                case .confirm(let booking):
-                    ConfirmBookingOverlay(booking: booking)
-                case .editPlan(let appointment, let displayMode):
-                    EditPlanOverlay(appointment: appointment, displayMode: displayMode)
-                case .pastDoseReview(let childID):
-                    PastDoseReviewOverlay(childID: childID)
-                case .appointmentReview:
-                    AppointmentReviewOverlay()
-                case .hideConfirm(let vaccine):
-                    HideConfirmOverlay(vaccineName: vaccine)
+            ZStack {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        if case .pastDoseReview = overlay {
+                            return
+                        }
+                        if case .appointmentReview = overlay {
+                            return
+                        }
+                        store.activeOverlay = nil
+                    }
+
+                VStack(spacing: 16) {
+                    switch overlay {
+                    case .bookingDate(let booking):
+                        BookingDateOverlay(booking: booking)
+                    case .confirm(let booking):
+                        ConfirmBookingOverlay(booking: booking)
+                    case .editPlan(let appointment, let displayMode):
+                        EditPlanOverlay(appointment: appointment, displayMode: displayMode)
+                    case .pastDoseReview(let childID):
+                        PastDoseReviewOverlay(childID: childID)
+                    case .appointmentReview:
+                        AppointmentReviewOverlay()
+                    case .hideConfirm(let vaccine):
+                        HideConfirmOverlay(vaccineName: vaccine)
+                    }
                 }
+                .frame(width: overlayWidth)
             }
-            .padding(.horizontal, 20)
         }
     }
 }
@@ -131,7 +129,7 @@ private struct AppointmentReviewOverlay: View {
                     Text(item.title)
                         .font(.system(size: 16))
                         .foregroundColor(.black)
-                    Text("预约时间 \(item.appointmentDateText) · \(item.clinic)")
+                    Text("预约时间 \(item.appointmentDateText)")
                         .font(.system(size: 12))
                         .foregroundColor(GCColor.textMuted)
                         .lineLimit(1)
@@ -255,6 +253,7 @@ private struct ProgressCard: View {
     let title: String
     let step: Int
     var showsProgress = true
+    var totalSteps = 2
     var onStepTapped: ((Int) -> Void)?
 
     var body: some View {
@@ -265,21 +264,29 @@ private struct ProgressCard: View {
                 .frame(maxWidth: .infinity, alignment: .center)
 
             if showsProgress {
-                ZStack(alignment: .leading) {
-                    Capsule()
-                        .fill(GCColor.progressLine)
-                        .frame(height: 3)
-                        .padding(.horizontal, 10)
+                GeometryReader { proxy in
+                    let dotCount = max(1, totalSteps)
+                    let trackInset: CGFloat = 10
+                    let trackWidth = max(0, proxy.size.width - trackInset * 2)
+                    let normalizedStep = min(max(step, 1), dotCount)
+                    let progress = dotCount == 1 ? 1 : CGFloat(normalizedStep - 1) / CGFloat(dotCount - 1)
 
-                    Capsule()
-                        .fill(Color(hex: 0xF1A7A8))
-                        .frame(width: fillWidth, height: 3)
-                        .padding(.leading, 10)
+                    ZStack(alignment: .leading) {
+                        Capsule()
+                            .fill(GCColor.progressLine)
+                            .frame(width: trackWidth, height: 3)
+                            .offset(x: trackInset)
 
-                    HStack {
-                        ForEach(1...3, id: \.self) { index in
-                            progressDot(index)
-                            if index < 3 { Spacer() }
+                        Capsule()
+                            .fill(Color(hex: 0xF1A7A8))
+                            .frame(width: trackWidth * progress, height: 3)
+                            .offset(x: trackInset)
+
+                        HStack {
+                            ForEach(1...dotCount, id: \.self) { index in
+                                progressDot(index)
+                                if index < dotCount { Spacer() }
+                            }
                         }
                     }
                 }
@@ -292,14 +299,6 @@ private struct ProgressCard: View {
         .frame(maxWidth: GCLayout.maxDesignWidth - 40)
         .background(Color.white.opacity(0.98))
         .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-    }
-
-    private var fillWidth: CGFloat {
-        switch step {
-        case 2: return 170
-        case 3: return 340
-        default: return 0
-        }
     }
 
     @ViewBuilder
@@ -512,7 +511,7 @@ private struct BookingDateOverlay: View {
                 if booking.isEditingExistingAppointment {
                     store.updateAppointmentDateAndReturnToEdit(next)
                 } else {
-                    store.activeOverlay = .clinic(next)
+                    store.activeOverlay = .confirm(next)
                 }
             }
             .modalButton(
@@ -556,322 +555,6 @@ private struct BookingDateOverlay: View {
     }
 }
 
-private struct ClinicOverlay: View {
-    @EnvironmentObject private var store: GrowthCareStore
-    let booking: PendingBooking
-
-    var body: some View {
-        VStack(spacing: 16) {
-            ProgressCard(
-                title: "接种门诊",
-                step: 2,
-                showsProgress: !booking.isEditingExistingAppointment
-            )
-
-            ModalCard {
-                VStack(spacing: 0) {
-                    Button {
-                        store.activeOverlay = .clinicSelect(booking)
-                    } label: {
-                        ClinicInfoRow(
-                            icon: "jiezhongmenzhen",
-                            title: "接种门诊",
-                            detail: booking.clinic,
-                            showsArrow: true
-                        )
-                    }
-                    .buttonStyle(.plain)
-
-                    divider
-
-                    ClinicInfoRow(icon: "xiangxidizhi", title: "详细地址", detail: "西岗区高尔基路188-194号")
-                    divider
-                    ClinicInfoRow(icon: "yingyeshijian", title: "营业时间", detail: "8:00-11:00  13:00-17:00")
-
-                    HStack(spacing: 20) {
-                        Button("取消") { store.activeOverlay = nil }
-                            .modalButton(background: GCColor.cancelButton)
-                        Button("下一步") {
-                            store.activeOverlay = .confirm(booking)
-                        }
-                        .modalButton(background: GCColor.headerTop, foreground: .white)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 8)
-                    .padding(.bottom, 24)
-                }
-            }
-        }
-    }
-
-    private var divider: some View {
-        Divider()
-            .background(Color(hex: 0xD3D3D3))
-            .padding(.horizontal, 20)
-    }
-}
-
-private struct ClinicInfoRow: View {
-    let icon: String
-    let title: String
-    let detail: String
-    var showsArrow = false
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 16) {
-            Image(icon)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 28, height: 28)
-                .padding(.top, 2)
-
-            VStack(alignment: .leading, spacing: 6) {
-                Text(title)
-                    .font(.system(size: 16))
-                    .foregroundColor(.black)
-                Text(detail)
-                    .font(.system(size: 14))
-                    .foregroundColor(GCColor.textSecondary)
-                    .lineLimit(2)
-            }
-            Spacer()
-
-            if showsArrow {
-                Image("jiantouerhao")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 9, height: 14)
-                    .padding(.top, 8)
-            }
-        }
-        .padding(.leading, 16)
-        .padding(.trailing, 20)
-        .padding(.vertical, 20)
-    }
-}
-
-private struct ClinicSelectOverlay: View {
-    @EnvironmentObject private var store: GrowthCareStore
-    let booking: PendingBooking
-    @State private var selectedClinic: String
-
-    init(booking: PendingBooking) {
-        self.booking = booking
-        _selectedClinic = State(initialValue: booking.clinic)
-    }
-
-    var body: some View {
-        VStack(spacing: 16) {
-            ProgressCard(
-                title: "接种门诊",
-                step: 2,
-                showsProgress: !booking.isEditingExistingAppointment
-            )
-
-            ModalCard {
-                VStack(spacing: 0) {
-                    HStack {
-                        Button {
-                            if booking.isEditingExistingAppointment {
-                                store.activeOverlay = .editPlan(appointment(from: booking), booking.editPlanDisplayMode)
-                            } else {
-                                store.activeOverlay = .clinic(booking)
-                            }
-                        } label: {
-                            Image("jiantouyihao")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 9, height: 14)
-                                .frame(width: 28, height: 28)
-                        }
-                        .buttonStyle(.plain)
-                        .offset(x: -8)
-                        Spacer()
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 10)
-                    .padding(.bottom, 2)
-
-                    ForEach(store.clinics) { clinic in
-                        Button {
-                            if booking.isEditingExistingAppointment {
-                                selectedClinic = clinic.name
-                            } else {
-                                var next = booking
-                                next.clinic = clinic.name
-                                store.activeOverlay = .clinic(next)
-                            }
-                        } label: {
-                            HStack(spacing: 20) {
-                                ZStack {
-                                    Circle()
-                                        .stroke(clinic.name == selectedClinic ? GCColor.pinkAccent : Color(hex: 0xCCCCCC), lineWidth: 2)
-                                        .frame(width: 23, height: 23)
-                                    if clinic.name == selectedClinic {
-                                        Circle()
-                                            .fill(GCColor.pinkAccent)
-                                            .frame(width: 11, height: 11)
-                                    }
-                                }
-
-                                Text(clinic.name)
-                                    .font(.system(size: 16))
-                                    .foregroundColor(.black)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                            .padding(.leading, 16)
-                            .padding(.trailing, 20)
-                            .padding(.vertical, 18)
-                        }
-                        .buttonStyle(.plain)
-
-                        if clinic.id != store.clinics.last?.id {
-                            Divider()
-                                .background(Color(hex: 0xD3D3D3))
-                                .padding(.horizontal, 20)
-                        }
-                    }
-
-                    Button {
-                        store.activeOverlay = .clinicAddressInput(booking)
-                    } label: {
-                        HStack(spacing: 10) {
-                            Image("jiahao")
-                                .renderingMode(.template)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 21, height: 21)
-                            Text("新增接种门诊地址")
-                                .font(.system(size: 16))
-                        }
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 40)
-                        .background(Color(hex: 0xFD898A))
-                        .clipShape(Capsule())
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.horizontal, 20)
-                    .padding(.top, booking.isEditingExistingAppointment ? 46 : 0)
-                    .padding(.bottom, booking.isEditingExistingAppointment ? 16 : 12)
-
-                    if booking.isEditingExistingAppointment {
-                        HStack(spacing: 20) {
-                            Button("取消") {
-                                store.activeOverlay = .editPlan(appointment(from: booking), booking.editPlanDisplayMode)
-                            }
-                            .modalButton(background: GCColor.cancelButton)
-
-                            Button("确定") {
-                                var next = booking
-                                next.clinic = selectedClinic
-                                store.updateAppointmentClinicAndReturnToEdit(next)
-                            }
-                            .modalButton(background: GCColor.headerTop, foreground: .white)
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 24)
-                    }
-                }
-                .frame(
-                    minHeight: booking.isEditingExistingAppointment ? 397 : 320,
-                    alignment: .top
-                )
-            }
-        }
-    }
-
-    private func appointment(from booking: PendingBooking) -> Appointment {
-        Appointment(
-            childID: store.activeChildID,
-            vaccineName: booking.vaccineName,
-            doseNumber: booking.doseNumber,
-            date: booking.date,
-            clinic: booking.clinic,
-            remark: booking.remark
-        )
-    }
-}
-
-private struct ClinicAddressInputOverlay: View {
-    @EnvironmentObject private var store: GrowthCareStore
-    let booking: PendingBooking
-
-    @State private var addressText = ""
-    @FocusState private var addressFocused: Bool
-
-    var body: some View {
-        ModalCard {
-            VStack(spacing: 0) {
-                Text("新增接种门诊地址")
-                    .font(.system(size: 18))
-                    .foregroundColor(.black)
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 24)
-                    .padding(.bottom, 20)
-
-                TextEditor(text: $addressText)
-                    .font(.system(size: 16))
-                    .foregroundColor(.black)
-                    .scrollContentBackground(.hidden)
-                    .background(Color.clear)
-                    .focused($addressFocused)
-                    .padding(14)
-                    .frame(height: 205)
-                    .background(Color(hex: 0xF7F2EF))
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                    .overlay(alignment: .topLeading) {
-                        if addressText.isEmpty {
-                            Text("请输入接种门诊地址")
-                                .font(.system(size: 16))
-                                .foregroundColor(Color(hex: 0x9A9A9A))
-                                .padding(.leading, 20)
-                                .padding(.top, 22)
-                                .allowsHitTesting(false)
-                        }
-                    }
-                    .padding(.horizontal, 20)
-
-                HStack(spacing: 20) {
-                    Button("取消") {
-                        addressFocused = false
-                        store.activeOverlay = .clinicSelect(booking)
-                    }
-                    .modalButton(background: GCColor.cancelButton)
-
-                    Button("完成") {
-                        addAddress()
-                    }
-                    .modalButton(background: GCColor.headerTop, foreground: .white)
-                    .opacity(trimmedAddress.isEmpty ? 0.55 : 1)
-                    .disabled(trimmedAddress.isEmpty)
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 22)
-                .padding(.bottom, 20)
-            }
-            .frame(minHeight: 365)
-        }
-        .onAppear {
-            addressFocused = true
-        }
-    }
-
-    private var trimmedAddress: String {
-        addressText.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-
-    private func addAddress() {
-        let address = trimmedAddress
-        guard !address.isEmpty else { return }
-        store.addClinic(name: address, address: address, hours: "敬请期待")
-        var next = booking
-        next.clinic = address
-        addressFocused = false
-        store.activeOverlay = .clinicSelect(next)
-    }
-}
-
 private struct ConfirmBookingOverlay: View {
     @EnvironmentObject private var store: GrowthCareStore
     let booking: PendingBooking
@@ -885,14 +568,9 @@ private struct ConfirmBookingOverlay: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            ProgressCard(title: "预定内容确认", step: 3) { index in
-                switch index {
-                case 1:
+            ProgressCard(title: "预定内容确认", step: 2, totalSteps: 2) { index in
+                if index == 1 {
                     store.activeOverlay = .bookingDate(updatedBooking())
-                case 2:
-                    store.activeOverlay = .clinic(updatedBooking())
-                default:
-                    break
                 }
             }
 
@@ -903,8 +581,6 @@ private struct ConfirmBookingOverlay: View {
                     valueRow(label: "接种疫苗", value: booking.vaccineName)
                     divider
                     valueRow(label: "接种时间", value: store.dottedDateText(booking.date))
-                    divider
-                    valueRow(label: "接种门诊", value: booking.clinic)
                     divider
                     remarkRow
 
@@ -924,7 +600,7 @@ private struct ConfirmBookingOverlay: View {
             DragGesture(minimumDistance: 20)
                 .onEnded { value in
                     if value.translation.width < -60 {
-                        store.activeOverlay = .clinic(updatedBooking())
+                        store.activeOverlay = .bookingDate(updatedBooking())
                     }
                 }
         )
@@ -1049,21 +725,6 @@ private struct EditPlanOverlay: View {
                     editRow("接种时间", store.dottedDateText(appointment.date), arrow: true) {
                         persistRemark()
                         store.activeOverlay = .bookingDate(
-                            PendingBooking(
-                                vaccineName: appointment.vaccineName,
-                                doseNumber: appointment.doseNumber,
-                                date: appointment.date,
-                                clinic: appointment.clinic,
-                                remark: normalizedRemark,
-                                isEditingExistingAppointment: true,
-                                editPlanDisplayMode: displayMode
-                            )
-                        )
-                    }
-                    divider
-                    editRow("接种门诊", appointment.clinic, arrow: true) {
-                        persistRemark()
-                        store.activeOverlay = .clinicSelect(
                             PendingBooking(
                                 vaccineName: appointment.vaccineName,
                                 doseNumber: appointment.doseNumber,

@@ -36,6 +36,7 @@ struct ParentProfile: Equatable, Codable {
     var idNumber: String
     var address: String
     var avatarAsset: String
+    var avatarData: Data? = nil
 }
 
 enum ReminderMode: String, CaseIterable, Identifiable, Equatable, Codable {
@@ -292,9 +293,6 @@ struct VaccineDelayPrecaution: Equatable {
 
 enum HomeOverlay: Identifiable, Equatable {
     case bookingDate(PendingBooking)
-    case clinic(PendingBooking)
-    case clinicSelect(PendingBooking)
-    case clinicAddressInput(PendingBooking)
     case confirm(PendingBooking)
     case editPlan(Appointment, EditPlanDisplayMode)
     case pastDoseReview(String)
@@ -305,12 +303,6 @@ enum HomeOverlay: Identifiable, Equatable {
         switch self {
         case .bookingDate(let booking):
             return "booking-date-\(booking.vaccineName)-\(booking.doseNumber)"
-        case .clinic(let booking):
-            return "clinic-\(booking.vaccineName)-\(booking.doseNumber)"
-        case .clinicSelect(let booking):
-            return "clinic-select-\(booking.vaccineName)-\(booking.doseNumber)"
-        case .clinicAddressInput(let booking):
-            return "clinic-address-input-\(booking.vaccineName)-\(booking.doseNumber)"
         case .confirm(let booking):
             return "confirm-\(booking.vaccineName)-\(booking.doseNumber)"
         case .editPlan(let appointment, let displayMode):

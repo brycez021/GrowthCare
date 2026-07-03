@@ -213,9 +213,11 @@ private struct HomeHeaderView: View {
     }
 
     private var profileRow: some View {
-        HStack {
+        HStack(spacing: 12) {
             ChildSwitcher()
-            Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .clipped()
+
             Button {
                 store.openCalendar()
             } label: {
@@ -232,6 +234,7 @@ private struct HomeHeaderView: View {
             .accessibilityLabel("日历")
         }
         .frame(height: GCLayout.childSwitcherHeight)
+        .frame(maxWidth: .infinity)
         .padding(.horizontal, 20)
     }
 }
@@ -434,60 +437,65 @@ private struct NextAppointmentCard: View {
                         .resizable()
                         .scaledToFill()
 
-                    HStack(spacing: 12) {
-                        Capsule()
-                            .fill(GCColor.textSecondary)
-                            .frame(width: 2, height: 52)
+                    GeometryReader { proxy in
+                        let buttonWidth = min(119, max(92, proxy.size.width * 0.30))
+                        let rowSpacing: CGFloat = proxy.size.width < 330 ? 8 : 12
 
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                                Text(store.fullDateText(appointmentGroup.date))
-                                    .font(.system(size: 22, weight: .heavy))
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.82)
-                                    .fixedSize(horizontal: true, vertical: false)
-                                Text(store.weekdayText(appointmentGroup.date))
-                                    .font(.system(size: 14))
-                                    .lineLimit(1)
-                                    .fixedSize(horizontal: true, vertical: false)
-                            }
-                            .layoutPriority(2)
+                        HStack(spacing: rowSpacing) {
+                            Capsule()
+                                .fill(GCColor.textSecondary)
+                                .frame(width: 2, height: 52)
 
-                            VStack(alignment: .leading, spacing: appointmentGroup.appointments.count > 2 ? 0 : 2) {
-                                ForEach(appointmentGroup.appointments) { appointment in
-                                    HStack(spacing: 8) {
-                                        Text("\(appointment.vaccineName) 第\(appointment.doseNumber)剂")
-                                            .font(.system(size: appointmentGroup.appointments.count > 2 ? 12 : 14))
-                                            .foregroundColor(GCColor.textSecondary)
-                                            .lineLimit(1)
-                                            .minimumScaleFactor(0.76)
-                                        Text("免费")
-                                            .font(.system(size: 10))
-                                            .foregroundColor(GCColor.textSecondary)
-                                            .padding(.horizontal, 4)
-                                            .frame(height: 14)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 3)
-                                                    .stroke(GCColor.textSecondary, lineWidth: 0.5)
-                                            )
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                                    Text(store.fullDateText(appointmentGroup.date))
+                                        .font(.system(size: 22, weight: .heavy))
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.70)
+                                    Text(store.weekdayText(appointmentGroup.date))
+                                        .font(.system(size: 14))
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.85)
+                                }
+                                .layoutPriority(2)
+
+                                VStack(alignment: .leading, spacing: appointmentGroup.appointments.count > 2 ? 0 : 2) {
+                                    ForEach(appointmentGroup.appointments) { appointment in
+                                        HStack(spacing: 6) {
+                                            Text("\(appointment.vaccineName) 第\(appointment.doseNumber)剂")
+                                                .font(.system(size: appointmentGroup.appointments.count > 2 ? 12 : 14))
+                                                .foregroundColor(GCColor.textSecondary)
+                                                .lineLimit(1)
+                                                .minimumScaleFactor(0.68)
+                                            Text("免费")
+                                                .font(.system(size: 10))
+                                                .foregroundColor(GCColor.textSecondary)
+                                                .padding(.horizontal, 4)
+                                                .frame(height: 14)
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 3)
+                                                        .stroke(GCColor.textSecondary, lineWidth: 0.5)
+                                                )
+                                        }
                                     }
                                 }
                             }
-                        }
-                        .layoutPriority(1)
+                            .layoutPriority(1)
 
-                        Spacer(minLength: 8)
+                            Spacer(minLength: 4)
 
-                        Button("修改计划") {
-                            store.openEditPlan()
+                            Button("修改计划") {
+                                store.openEditPlan()
+                            }
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                            .frame(width: buttonWidth, height: 44)
+                            .background(GCColor.textSecondary)
+                            .clipShape(Capsule())
                         }
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.white)
-                        .frame(width: 119, height: 44)
-                        .background(GCColor.textSecondary)
-                        .clipShape(Capsule())
+                        .padding(.horizontal, proxy.size.width < 330 ? 12 : 18)
+                        .frame(width: proxy.size.width, height: proxy.size.height)
                     }
-                    .padding(.horizontal, 18)
                 }
                 .frame(height: 96)
             }
@@ -667,15 +675,28 @@ private struct VaccineCard: View {
                 }
                 .frame(height: 24)
 
-                HStack(alignment: .top, spacing: 16) {
-                    ForEach(vaccine.doses) { dose in
-                        DoseCircleView(dose: dose) {
-                            if dose.status != .done {
-                                onDoseTap(dose)
+                GeometryReader { proxy in
+                    let count = CGFloat(max(vaccine.doses.count, 1))
+                    let maxSpacing: CGFloat = 16
+                    let minSpacing: CGFloat = 6
+                    let availableWidth = max(0, proxy.size.width - 4)
+                    let preferredCircle: CGFloat = 48
+                    let compressedCircle = (availableWidth - max(0, count - 1) * minSpacing) / count
+                    let circleSize = min(preferredCircle, max(36, compressedCircle))
+                    let spacing: CGFloat = count > 1 ? min(maxSpacing, max(minSpacing, (availableWidth - circleSize * count) / (count - 1))) : 0
+
+                    HStack(alignment: .top, spacing: spacing) {
+                        ForEach(vaccine.doses) { dose in
+                            DoseCircleView(dose: dose, size: circleSize) {
+                                if dose.status != .done {
+                                    onDoseTap(dose)
+                                }
                             }
                         }
                     }
+                    .frame(width: availableWidth, alignment: .leading)
                 }
+                .frame(height: 72)
                 .padding(.leading, 2)
             }
             .padding(.horizontal, 14)
@@ -688,6 +709,7 @@ private struct VaccineCard: View {
 
 private struct DoseCircleView: View {
     let dose: VaccineDose
+    var size: CGFloat = 48
     let action: () -> Void
 
     var body: some View {
@@ -697,25 +719,26 @@ private struct DoseCircleView: View {
                     Image(assetName)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 48, height: 48)
+                        .frame(width: size, height: size)
 
                     if dose.status == .future {
                         Text("\(dose.number)")
-                            .font(.system(size: 32))
+                            .font(.system(size: size * 0.66))
                             .foregroundColor(Color(hex: 0xE0E0E0))
                     }
                 }
-                .frame(width: 48, height: 48)
+                .frame(width: size, height: size)
             }
             .buttonStyle(.plain)
             .allowsHitTesting(dose.status != .done)
 
             Text(dose.dateText)
-                .font(.system(size: 10))
+                .font(.system(size: size < 42 ? 8 : 10))
                 .foregroundColor(GCColor.textMuted)
                 .lineLimit(1)
+                .minimumScaleFactor(0.75)
         }
-        .frame(width: 48)
+        .frame(width: size)
     }
 
     private var assetName: String {

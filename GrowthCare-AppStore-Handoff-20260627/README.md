@@ -20,10 +20,10 @@ Current implementation status:
 - Growth curve (`reference/html/成长曲线.html`) has been rewritten as native SwiftUI.
 - Growth records and add-record flow (`reference/html/成长记录.html`, `reference/html/成长记录添加.html`) are native SwiftUI.
 - Vaccine detail and optional vaccine add/restore flows (`reference/html/疫苗详情.html`, `reference/html/疫苗添加.html`) are native SwiftUI.
-- Vaccine calendar and clinic management (`reference/html/疫苗日历.html`, `reference/html/接种单位.html`, `reference/html/添加诊所.html`) are native SwiftUI.
-- Profile, reminder, child profile, and sharing flows (`reference/html/我的.html`, `reference/html/个人信息.html`, `reference/html/孩子信息.html`, `reference/html/提醒日期.html`, `reference/html/提醒时间.html`, `reference/html/添加共享成员.html`) are native SwiftUI.
+- Vaccine calendar (`reference/html/疫苗日历.html`) is native SwiftUI; clinic-management entry points are hidden per the current App Store handoff scope.
+- Profile, reminder, and child profile flows (`reference/html/我的.html`, `reference/html/个人信息.html`, `reference/html/孩子信息.html`, `reference/html/提醒日期.html`, `reference/html/提醒时间.html`) are native SwiftUI; sharing entry points are hidden per the current App Store handoff scope.
 - Final integrated sandbox QA has passed with the accepted build command. Remaining follow-up is full simulator/device visual verification outside the restricted sandbox.
-- Persistence remains the current in-memory snapshot boundary by design; real local storage is a future decision.
+- Local file persistence is enabled for children, appointments, vaccination records, growth records, reminders, and parent profile data.
 - All future work is owned by the current single Codex agent; sub-agent execution is retired.
 
 ## Source Of Truth
