@@ -312,7 +312,9 @@ private struct SchedulePill: Identifiable {
         if name.contains("白破疫苗") { return "白破疫苗" }
         if name.contains("百白破") || name.contains("白破疫苗") { return "百白破疫苗" }
         if name.contains("A群流脑") || name.contains("A群脑流") { return "A群脑流疫苗" }
-        if name.contains("A+C结合流脑") || name.contains("AC流脑") || name.contains("ACYW135") { return "A+C群脑流疫苗" }
+        if name.contains("A+C结合流脑") { return "A+C结合流脑疫苗" }
+        if name.contains("AC流脑多糖") { return "AC流脑多糖疫苗" }
+        if name.contains("ACYW135") { return "ACYW135多糖疫苗" }
         if name.contains("麻腮风") { return "麻腮风疫苗" }
         if name.contains("乙脑减毒") { return "乙脑减毒疫苗" }
         if name.contains("乙脑灭活") { return "乙脑灭活疫苗" }

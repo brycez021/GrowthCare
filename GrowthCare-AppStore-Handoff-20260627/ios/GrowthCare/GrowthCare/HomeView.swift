@@ -21,11 +21,12 @@ struct HomeView: View {
                         }
                         Color.clear.frame(height: BottomTabBar.reservedHeight(for: proxy.safeAreaInsets.bottom) + 24)
                     }
+                    .frame(width: proxy.size.width, alignment: .top)
                 }
                 .ignoresSafeArea()
                 .simultaneousGesture(completedRevealGesture)
 
-                HomeHeaderView(topInset: proxy.safeAreaInsets.top)
+                HomeHeaderView(topInset: proxy.safeAreaInsets.top, screenWidth: proxy.size.width)
 
                 VStack {
                     Spacer()
@@ -163,6 +164,7 @@ struct HomeView: View {
 private struct HomeHeaderView: View {
     @EnvironmentObject private var store: GrowthCareStore
     let topInset: CGFloat
+    let screenWidth: CGFloat
 
     static let appointmentCardTopY: CGFloat = GCLayout.homeAppointmentCardTopY
     static let appointmentCardBottomY: CGFloat = appointmentCardTopY + NextAppointmentCard.height
@@ -182,8 +184,7 @@ private struct HomeHeaderView: View {
                     .padding(.top, screenY(GCLayout.topSwitcherY))
 
                 if let appointmentGroup = store.nextAppointmentGroup() {
-                    NextAppointmentCard(appointmentGroup: appointmentGroup)
-                        .padding(.horizontal, 20)
+                    NextAppointmentCard(appointmentGroup: appointmentGroup, screenWidth: screenWidth)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.top, screenY(Self.appointmentCardTopY))
                 }
@@ -400,6 +401,11 @@ private struct NextAppointmentCard: View {
 
     @EnvironmentObject private var store: GrowthCareStore
     let appointmentGroup: NextAppointmentGroup
+    let screenWidth: CGFloat
+
+    private var cardWidth: CGFloat {
+        min(max(280, screenWidth - 40), GCLayout.maxDesignWidth - 40)
+    }
 
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -467,7 +473,7 @@ private struct NextAppointmentCard: View {
                                                 .foregroundColor(GCColor.textSecondary)
                                                 .lineLimit(1)
                                                 .minimumScaleFactor(0.68)
-                                            Text("免费")
+                                            Text(store.vaccineChargeText(appointment.vaccineName))
                                                 .font(.system(size: 10))
                                                 .foregroundColor(GCColor.textSecondary)
                                                 .padding(.horizontal, 4)
@@ -501,10 +507,11 @@ private struct NextAppointmentCard: View {
             }
             .padding(.top, 56)
             .padding(.horizontal, 12)
-            .padding(.bottom, 12)
+                .padding(.bottom, 12)
         }
-        .frame(maxWidth: GCLayout.maxDesignWidth - 40)
+        .frame(width: cardWidth)
         .frame(height: Self.height)
+        .clipped()
     }
 }
 

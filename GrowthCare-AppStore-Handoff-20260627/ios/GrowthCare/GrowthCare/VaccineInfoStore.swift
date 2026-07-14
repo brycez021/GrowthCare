@@ -11,8 +11,9 @@ enum VaccineInfoStore {
         if name.contains("脊髓灰质炎") || name.contains("脊灰疫苗") { return "脊灰疫苗" }
         if name.contains("百白破疫苗") { return "百白破" }
         if name.contains("A群脑流") || name.contains("A群流脑") { return "A群流脑" }
-        if name.contains("A+C群脑流") { return "A+C结合流脑" }
+        if name.contains("A+C群脑流") || name.contains("A+C结合流脑") { return "A+C结合流脑" }
         if name.contains("AC流脑") || name.contains("A群C群") { return "AC流脑多糖" }
+        if name.contains("ACYW135") { return "ACYW135多糖" }
         if name.contains("白破疫苗") { return "白破疫苗" }
         if name.contains("百白破") { return "百白破" }
         if name.contains("五联疫苗") { return "五联疫苗" }

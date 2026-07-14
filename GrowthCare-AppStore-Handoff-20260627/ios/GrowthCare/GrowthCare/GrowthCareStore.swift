@@ -21,7 +21,7 @@ final class GrowthCareStore: ObservableObject {
     private let persistence: GrowthCarePersistence
 
     private let pinnedVaccines: Set<String> = ["卡介苗", "乙肝疫苗"]
-    private let homeOrder = [
+    private let plannedVaccines = [
         "卡介苗",
         "乙肝疫苗",
         "脊髓灰质炎疫苗",
@@ -29,17 +29,20 @@ final class GrowthCareStore: ObservableObject {
         "A群脑流疫苗",
         "麻腮风疫苗",
         "乙脑减毒疫苗",
-        "乙脑灭活疫苗",
-        "甲肝减毒疫苗",
         "甲肝灭活疫苗",
-        "A+C群脑流疫苗"
+        "AC流脑多糖疫苗",
+        "白破疫苗"
     ]
     private let optionalVaccines = [
         "五联疫苗",
         "五价轮状疫苗",
         "13价肺炎疫苗",
+        "A+C结合流脑疫苗",
         "手足口疫苗",
         "水痘疫苗",
+        "甲肝减毒疫苗",
+        "ACYW135多糖疫苗",
+        "乙脑灭活疫苗",
         "流感疫苗"
     ]
 
@@ -54,39 +57,40 @@ final class GrowthCareStore: ObservableObject {
     private let doseAgeMonths: [String: [Int]] = [
         "卡介苗": [0],
         "乙肝疫苗": [0, 1, 6],
-        "脊髓灰质炎疫苗": [2, 3, 4, 36],
-        "百白破疫苗": [2, 4, 6, 18, 72],
+        "脊髓灰质炎疫苗": [2, 3, 4, 48],
+        "百白破疫苗": [2, 4, 6, 18],
         "A群脑流疫苗": [6, 9],
-        "麻腮风疫苗": [8],
+        "麻腮风疫苗": [8, 18],
         "乙脑减毒疫苗": [8, 48],
-        "乙脑灭活疫苗": [2, 4, 6, 12],
-        "甲肝减毒疫苗": [18],
         "甲肝灭活疫苗": [18, 24],
-        "A+C群脑流疫苗": [6, 9],
+        "AC流脑多糖疫苗": [36, 72],
+        "白破疫苗": [72],
         "五联疫苗": [2, 3, 4, 18],
         "五价轮状疫苗": [2, 3, 4],
         "13价肺炎疫苗": [2, 4, 6, 12],
+        "A+C结合流脑疫苗": [6, 9],
         "手足口疫苗": [6, 7],
         "水痘疫苗": [12, 72],
+        "甲肝减毒疫苗": [18],
+        "ACYW135多糖疫苗": [36, 72],
+        "乙脑灭活疫苗": [2, 4, 6, 12],
         "流感疫苗": [6]
     ]
 
     private let scheduleMonthVaccines: [Int: Set<String>] = [
         0: ["乙肝疫苗", "卡介苗"],
         1: ["乙肝疫苗"],
-        2: ["脊髓灰质炎疫苗", "百白破疫苗", "五联疫苗", "五价轮状疫苗", "13价肺炎疫苗"],
-        3: ["脊髓灰质炎疫苗", "五联疫苗", "五价轮状疫苗"],
-        4: ["脊髓灰质炎疫苗", "百白破疫苗", "五联疫苗", "五价轮状疫苗", "13价肺炎疫苗"],
-        6: ["乙肝疫苗", "百白破疫苗", "A群脑流疫苗", "A+C群脑流疫苗", "手足口疫苗", "13价肺炎疫苗"],
-        7: ["手足口疫苗"],
+        2: ["脊髓灰质炎疫苗", "百白破疫苗"],
+        3: ["脊髓灰质炎疫苗"],
+        4: ["脊髓灰质炎疫苗", "百白破疫苗"],
+        6: ["乙肝疫苗", "百白破疫苗", "A群脑流疫苗"],
         8: ["麻腮风疫苗", "乙脑减毒疫苗"],
-        9: ["A群脑流疫苗", "A+C群脑流疫苗"],
-        12: ["水痘疫苗", "13价肺炎疫苗"],
-        18: ["麻腮风疫苗", "百白破疫苗", "甲肝灭活疫苗", "五联疫苗", "甲肝减毒疫苗"],
+        9: ["A群脑流疫苗"],
+        18: ["麻腮风疫苗", "百白破疫苗", "甲肝灭活疫苗"],
         24: ["乙脑减毒疫苗", "甲肝灭活疫苗"],
-        36: ["A+C群脑流疫苗"],
-        48: ["脊髓灰质炎疫苗", "水痘疫苗"],
-        72: ["A+C群脑流疫苗", "百白破疫苗"]
+        36: ["AC流脑多糖疫苗"],
+        48: ["脊髓灰质炎疫苗"],
+        72: ["AC流脑多糖疫苗", "白破疫苗"]
     ]
 
     init(persistence: GrowthCarePersistence = FileGrowthCarePersistence()) {
@@ -228,8 +232,7 @@ final class GrowthCareStore: ObservableObject {
     }
 
     func addPageVaccines() -> [String] {
-        let hidden = currentChildData.hiddenVaccines.filter { !pinnedVaccines.contains($0) }
-        return Array(Set(optionalVaccines).union(hidden))
+        Array(Set(optionalVaccines))
             .sorted { displayOrder($0) == displayOrder($1) ? $0.localizedCompare($1) == .orderedAscending : displayOrder($0) < displayOrder($1) }
     }
 
@@ -247,7 +250,11 @@ final class GrowthCareStore: ObservableObject {
     func isVaccineVisible(_ vaccineName: String) -> Bool {
         if pinnedVaccines.contains(vaccineName) { return true }
         if currentChildData.hiddenVaccines.contains(vaccineName) { return false }
-        return homeOrder.contains(vaccineName) || currentChildData.addedVaccines.contains(vaccineName)
+        return plannedVaccines.contains(vaccineName) || currentChildData.addedVaccines.contains(vaccineName)
+    }
+
+    func vaccineChargeText(_ vaccineName: String) -> String {
+        plannedVaccines.contains(vaccineName) ? "免费" : "自费"
     }
 
     func openVaccineDetail(_ vaccineName: String, initialTab: VaccineDetailTab = .intro) {
@@ -498,8 +505,8 @@ final class GrowthCareStore: ObservableObject {
     }
 
     func hideVaccine(_ vaccine: String) {
-        guard !pinnedVaccines.contains(vaccine) else {
-            toastMessage = "\(vaccine) 为固定展示疫苗，不能隐藏"
+        guard !plannedVaccines.contains(vaccine) else {
+            toastMessage = "\(vaccine) 为规划疫苗，固定展示"
             activeOverlay = nil
             return
         }
@@ -514,7 +521,7 @@ final class GrowthCareStore: ObservableObject {
         var data = currentChildData
         data.hiddenVaccines.remove(vaccine)
 
-        if !homeOrder.contains(vaccine), !data.addedVaccines.contains(vaccine) {
+        if !plannedVaccines.contains(vaccine), !data.addedVaccines.contains(vaccine) {
             data.addedVaccines.append(vaccine)
             data.addedVaccines.sort { displayOrder($0) == displayOrder($1) ? $0.localizedCompare($1) == .orderedAscending : displayOrder($0) < displayOrder($1) }
         }
@@ -897,19 +904,9 @@ final class GrowthCareStore: ObservableObject {
     }
 
     private func baseVaccines(for data: ChildData) -> [(name: String, doses: [Int])] {
-        let defaultVaccines = [
-            ("卡介苗", [1]),
-            ("乙肝疫苗", [1, 2, 3]),
-            ("脊髓灰质炎疫苗", [1, 2, 3, 4]),
-            ("百白破疫苗", [1, 2, 3, 4, 5]),
-            ("A群脑流疫苗", [1, 2]),
-            ("麻腮风疫苗", [1]),
-            ("乙脑减毒疫苗", [1, 2]),
-            ("乙脑灭活疫苗", [1, 2, 3, 4]),
-            ("甲肝减毒疫苗", [1]),
-            ("甲肝灭活疫苗", [1, 2]),
-            ("A+C群脑流疫苗", [1, 2])
-        ]
+        let defaultVaccines = plannedVaccines.map { vaccine in
+            (name: vaccine, doses: Array(1...(doseAgeMonths[vaccine]?.count ?? 1)))
+        }
 
         let added = data.addedVaccines.map { vaccine in
             (name: vaccine, doses: Array(1...(doseAgeMonths[vaccine]?.count ?? 1)))
@@ -1028,7 +1025,8 @@ final class GrowthCareStore: ObservableObject {
     }
 
     private func displayOrder(_ vaccineName: String) -> Int {
-        homeOrder.firstIndex(of: vaccineName) ?? homeOrder.count
+        let order = plannedVaccines + optionalVaccines
+        return order.firstIndex(of: vaccineName) ?? order.count
     }
 
     func shortDateText(_ date: Date) -> String {
