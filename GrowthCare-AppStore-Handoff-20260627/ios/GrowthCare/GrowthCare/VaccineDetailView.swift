@@ -152,6 +152,9 @@ struct VaccineDetailView: View {
                         .padding(.top, 14)
 
                     sideEffectsList
+
+                    VaccineCitationSection()
+                        .padding(.top, 10)
                 }
                 .padding(24)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -204,11 +207,15 @@ struct VaccineDetailView: View {
                     PrecautionBlock(label: precautions.health.title, text: precautions.health.text)
                     PrecautionBlock(label: precautions.allergy.title, text: precautions.allergy.text)
                     DelayPrecautionBlock(delay: precautions.delay)
+                    VaccineCitationSection()
+                        .padding(.top, 8)
                 } else {
                     Text("请咨询接种门诊了解注意事项。")
                         .font(.system(size: 16))
                         .lineSpacing(8)
                         .foregroundColor(VaccineDetailColor.bodyText)
+                    VaccineCitationSection()
+                        .padding(.top, 8)
                 }
             }
             .padding(24)
@@ -421,6 +428,76 @@ private struct DelayPrecautionBlock: View {
             .padding(.leading, 8)
         }
     }
+}
+
+private struct VaccineCitationSection: View {
+    private let citations: [VaccineCitation] = [
+        VaccineCitation(
+            title: "国家免疫规划疫苗儿童免疫程序及说明（2026年版）",
+            source: "国家疾病预防控制局、国家卫生健康委",
+            url: "https://www.ndcpa.gov.cn/jbkzzx/c100014/common/content/content_2073005020766703616.html"
+        ),
+        VaccineCitation(
+            title: "国家免疫规划疫苗儿童免疫程序及说明（2026年版）解读问答",
+            source: "中国疾病预防控制中心",
+            url: "https://www.chinacdc.cn/jkyj/mygh02/yfjzfw/mycx/202607/t20260709_1837982.html"
+        ),
+        VaccineCitation(
+            title: "疑似预防接种异常反应知识问答",
+            source: "中国疾病预防控制中心",
+            url: "https://www.chinacdc.cn/jkyj/mygh02/yfjzfw/blfyjcycz/"
+        ),
+        VaccineCitation(
+            title: "Vaccines and immunization: Vaccine safety",
+            source: "World Health Organization",
+            url: "https://www.who.int/news-room/questions-and-answers/item/vaccines-and-immunization-vaccine-safety"
+        )
+    ]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("资料来源")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.black)
+
+            Text("以下内容仅用于接种计划记录与健康科普，具体接种禁忌、补种方案和个体化判断请以接种门诊医生评估及疫苗说明书为准。")
+                .font(.system(size: 13))
+                .lineSpacing(5)
+                .foregroundColor(VaccineDetailColor.bodyText)
+                .fixedSize(horizontal: false, vertical: true)
+
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(citations) { citation in
+                    if let url = URL(string: citation.url) {
+                        Link(destination: url) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(citation.title)
+                                    .font(.system(size: 14, weight: .medium))
+                                    .foregroundColor(Color(hex: 0x4D8266))
+                                    .fixedSize(horizontal: false, vertical: true)
+
+                                Text(citation.source)
+                                    .font(.system(size: 12))
+                                    .foregroundColor(Color(hex: 0x8D8D8D))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(hex: 0xF7F7F7))
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+}
+
+private struct VaccineCitation: Identifiable {
+    let title: String
+    let source: String
+    let url: String
+
+    var id: String { url }
 }
 
 private extension Array {
